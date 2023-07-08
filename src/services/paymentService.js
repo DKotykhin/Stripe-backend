@@ -38,8 +38,8 @@ class PaymentService {
             line_items,
             customer: customer.id,
             mode: 'payment',
-            success_url: 'http://google.com',
-            cancel_url: 'https://www.bing.com/',
+            success_url: 'https://stripe-frontend-six.vercel.app/thanks',
+            cancel_url: 'https://stripe-frontend-six.vercel.app/cancel',
         });
 
         return { url: session.url };

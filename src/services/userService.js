@@ -11,7 +11,7 @@ import 'dotenv/config';
 const generateToken = (_id) => {
     return jwt.sign(
         { _id },
-        process.env.SECRET_KEY,
+        process.env.TOKEN_SECRET_KEY,
         { expiresIn: "1d" }
     )
 };

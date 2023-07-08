@@ -2,19 +2,22 @@ import Stripe from "stripe";
 
 import 'dotenv/config';
 
+import OrderModel from '../models/OrderModel.js';
+
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 class PaymentService {
 
-    async paymentIntent(data, user) {
+    async paymentIntent(orderData, userData, userId) {
         const customer = await stripe.customers.create({
             metadata: {
-                order: JSON.stringify(data),
-                user: JSON.stringify(user),
+                orderData: JSON.stringify(orderData),
+                userData: JSON.stringify(userData),
+                userId,
             },
         });
 
-        const line_items = data?.map(item => {
+        const line_items = orderData?.map(item => {
             return {
                 price_data: {
                     currency: 'usd',
@@ -36,10 +39,20 @@ class PaymentService {
             customer: customer.id,
             mode: 'payment',
             success_url: 'http://google.com',
-            cancel_url: 'http://localhost:4242/cancel',
+            cancel_url: 'https://www.bing.com/',
         });
 
         return { url: session.url };
+    }
+
+    async paymentRefund(amount, orderId) {
+        const order = await OrderModel.findById(orderId);
+        const refund = await stripe.refunds.create({
+            payment_intent: order.payment_intent,
+            amount: amount * 100,
+        });
+
+        return { refund };
     }
 }
 

@@ -1,21 +1,14 @@
 import { Types } from 'mongoose';
 
 import OrderModel from '../models/OrderModel.js';
-import UserModel from "../models/UserModel.js";
-
-import ApiError from '../error/apiError.js';
 
 class OrderService {
     async writeOrderData(customer, data) {
-        const { email, metadata } = customer;
+        const { metadata } = customer;
         const { amount_total, payment_intent } = data;
 
-        const user = await UserModel.findOne({ email });
-        if (!user) {
-            throw ApiError.notFound("Can't find user")
-        }
-        const orderData = JSON.parse(metadata.order);
-        const userData = JSON.parse(metadata.user);
+        const orderData = JSON.parse(metadata.orderData);
+        const userData = JSON.parse(metadata.userData);
         const { deliveryWay, address, comment } = userData;
 
         const orderQuantity = orderData.reduce((acc, value) => acc + value.quantity, 0);
@@ -23,7 +16,7 @@ class OrderService {
         const averageSum = Math.round(orderSum / orderQuantity);
 
         const doc = new OrderModel({
-            userId: user._id,
+            userId: metadata.userId,
             payment_intent,
             deliveryWay,
             address,

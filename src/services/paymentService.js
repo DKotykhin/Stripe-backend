@@ -6,6 +6,8 @@ import OrderModel from '../models/OrderModel.js';
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
+const imageBaseUrl = process.env.IMAGE_BASE_URL;
+
 class PaymentService {
 
     async paymentIntent(orderData, userData, userId) {
@@ -23,7 +25,7 @@ class PaymentService {
                     currency: 'usd',
                     product_data: {
                         name: item.itemName,
-                        images: [item.image],
+                        images: [imageBaseUrl + item.image],
                         metadata: {
                             weight: item.weight,
                         },

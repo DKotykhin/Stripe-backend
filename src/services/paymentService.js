@@ -54,6 +54,18 @@ class PaymentService {
             amount: amount * 100,
         });
 
+        const updatedOrder = await OrderModel.findOneAndUpdate(
+            { _id: orderId },
+            {
+                'refund.status': true,
+                'refund.amount': amount,
+            },
+            { new: true },
+        );
+        if (!updatedOrder) {
+            throw ApiError.forbidden("Modified forbidden")
+        }
+
         return { refund };
     }
 }

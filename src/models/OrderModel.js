@@ -27,7 +27,14 @@ const orderSchema = new Schema({
                 ref: 'Store',
             },
         }
-    ]
+    ],
+    refund: {
+        status: {
+            type: Boolean,
+            default: false,
+        },
+        amount: Number,
+    }
 },
     {
         timestamps: true,

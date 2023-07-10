@@ -17,7 +17,9 @@ Full backend part for CoffeeDoor online store with Stripe payment
 -   Bcrypt for creating password hash
 -   3 models for database: Store, Users, Orders
 -   CRUD operations for models
--   Get aggregate info about users orders
+-   Get aggregated info about users orders
+-   Payment intend and payment refund
+-   Stripe Webhook for updating database with new orders
 
 ## Environment Variables
 
@@ -32,6 +34,8 @@ To run this project, you will need to add the following environment variables to
 `WEBHOOK_SECRET_KEY`
 
 `TOKEN_SECRET_KEY`
+
+`IMAGE_BASE_URL`
 
 ## Deploy on Heroku
 
